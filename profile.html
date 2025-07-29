@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lili Nails Studio - Mi Perfil</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="logo-icon"><i class="fas fa-spa"></i></span>
+                <span class="logo-text">Lili Nails Studio</span>
+            </div>
+            <div class="navbar-links">
+                <a href="index.html" class="nav-link"><i class="fas fa-calendar-check"></i> Reservas</a>
+                <a href="#" class="nav-link"><i class="fas fa-hand-sparkles"></i> Servicios</a>
+                <a href="#" class="nav-link"><i class="fas fa-images"></i> Galería</a>
+                <a href="#" class="nav-link"><i class="fas fa-phone-alt"></i> Contacto</a>
+                <a href="#" class="nav-link active" id="profileNavLink"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+            </div>
+            <div class="navbar-social">
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="userProfile" class="user-profile-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="profileWelcomeText"><i class="fas fa-user-circle"></i> Mi Perfil</h2>
+                <p>Aquí puedes ver tus citas agendadas y tu información.</p>
+            </div>
+
+            <div class="profile-card">
+            <h3>Información de Cuenta</h3>
+            <p><strong>Nombre:</strong> <span id="profileName">Cargando...</span></p>
+            <p><strong>Correo:</strong> <span id="profileEmail">Cargando...</span></p>
+            <p><strong>Adeudo Actual:</strong> <span id="profileAdeudo">$0.00</span></p> 
+            <button id="logoutBtn" class="btn-glam logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+            </div>
+
+            <div class="my-bookings">
+                <h3>Mis Citas</h3>
+                <div id="userBookingsList" class="bookings-list">
+                    <p class="no-bookings">No tienes citas agendadas aún.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-spa"></i> Lili Nails Studio
+            </div>
+            <div class="footer-info">
+                <p><i class="fas fa-map-marker-alt"></i> Av. Belleza 123, Ciudad Glam</p>
+                <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> hola@lilinails.com</p>
+            </div>
+            <div class="footer-hours">
+                <h3>Horario:</h3>
+                <p>Lun-Vie: 9am - 7pm</p>
+                <p>Sáb: 10am - 5pm</p>
+                <p>Dom: Cerrado</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Lili Nails Studio. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/profile-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Lili Nails Studio</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="logo-icon"><i class="fas fa-tools"></i></span>
+                <span class="logo-text">Panel de Administración</span>
+            </div>
+            <div class="navbar-links">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Inicio</a>
+                <a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+            </div>
+            <div class="navbar-user" id="userNavSection" style="display: none;">
+                <span id="userNavEmail"></span>
+                <button id="logoutButtonNav"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-container">
+        <div id="loginSection" class="login-section">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2><i class="fas fa-lock"></i> Acceso Administrativo</h2>
+                    <p>Ingresa tus credenciales para acceder al panel</p>
+                </div>
+                <div class="form-group">
+                    <label for="adminEmail"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
+                    <input type="email" id="adminEmail" placeholder="admin@lilinails.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword"><i class="fas fa-key"></i> Contraseña:</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required>
+                </div>
+                <button id="loginButton" class="btn-glam">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+                <div id="loginMessage" class="message"></div>
+            </div>
+        </div>
+
+        <div id="adminPanel" class="dashboard" style="display: none;">
+            <div class="dashboard-header">
+                <h1><i class="fas fa-calendar-check"></i> Administración de Citas</h1>
+                <div class="user-info">
+                    <span id="userEmailDisplay"></span>
+                    <button id="logoutButton" class="btn-outline">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3 id="pendingCount">0</h3>
+                        <p>Pendientes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h3 id="confirmedCount">0</h3>
+                        <p>Confirmadas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                    <div class="stat-info">
+                        <h3 id="todayCount">0</h3>
+                        <p>Hoy</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-info">
+                        <h3 id="revenueCount">$0</h3>
+                        <p>Ingresos</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bookings-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list"></i> Lista de Citas</h2>
+                    <div class="filters">
+                        <select id="filterStatus" class="filter-select">
+                            <option value="all">Todas las citas</option>
+                            <option value="pendiente">Pendientes</option>
+                            <option value="confirmada">Confirmadas</option>
+                            <option value="completada">Completadas</option>
+                            <option value="cancelada">Canceladas</option>
+                        </select>
+                        <input type="date" id="filterDate" class="filter-select">
+                    </div>
+                </div>
+
+                <div id="bookingsList" class="bookings-table-container">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Cargando citas...</p>
+                    </div>
+                </div>
+                <div id="noBookingsMessage" class="message info" style="display: none;">
+                    <i class="fas fa-info-circle"></i> No hay citas agendadas por el momento.
+                </div>
+            </div>
+
+            <div class="bookings-section"> <div class="section-header">
+                    <h2><i class="fas fa-dollar-sign"></i> Gestión de Adeudos de Clientes</h2>
+                </div>
+                <div class="bookings-table-container">
+                    <table id="debtsTable" class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Adeudo ($)</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="4">Cargando clientes...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="adminMessage" class="message" style="margin-top: 20px;"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/admin-script.js"></script>
+</body>
+</html>

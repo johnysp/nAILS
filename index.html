@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lili Nails Studio - Reserva tu Cita</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="logo-icon"><i class="fas fa-spa"></i></span>
+                <span class="logo-text">Lili Nails Studio</span>
+            </div>
+            <div class="navbar-links">
+                <a href="#" class="nav-link active"><i class="fas fa-calendar-check"></i> Reservas</a>
+                <a href="#" class="nav-link"><i class="fas fa-hand-sparkles"></i> Servicios</a>
+                <a href="#" class="nav-link"><i class="fas fa-images"></i> Galería</a>
+                <a href="#" class="nav-link"><i class="fas fa-phone-alt"></i> Contacto</a>
+                <a href="#" class="nav-link" id="openAuthModal"><i class="fas fa-user-circle"></i> Mi Cuenta</a> 
+            </div>
+            <div class="navbar-social">
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Transforma tus uñas en obras de arte</h1>
+            <p>Reserva ahora y obtén un 10% de descuento en tu primer servicio</p>
+            <a href="#booking" class="hero-btn">Reservar Cita <i class="fas fa-arrow-down"></i></a>
+        </div>
+    </header>
+
+    <section id="booking" class="booking-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-calendar-alt"></i> Agenda tu Cita</h2>
+                <p>Selecciona tu servicio preferido y reserva tu espacio</p>
+            </div>
+            
+            <form id="bookingForm" class="booking-form">
+                <div class="form-group">
+                    <label for="nombre"><i class="fas fa-user"></i> Nombre Completo:</label>
+                    <input type="text" id="nombre" placeholder="Ej: María González" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fecha"><i class="fas fa-calendar-day"></i> Fecha:</label>
+                        <input type="date" id="fecha" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hora"><i class="fas fa-clock"></i> Hora:</label>
+                        <input type="time" id="hora" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="servicio"><i class="fas fa-hand-sparkles"></i> Servicio:</label>
+                    <select id="servicio" required>
+                        <option value="">Selecciona un servicio</option>
+                        <option value="Manicura Clasica" data-precio="150">Manicura Clásica ($150)</option>
+                        <option value="Pedicura Spa" data-precio="250">Pedicura Spa ($250)</option>
+                        <option value="Uñas Acrilicas" data-precio="350">Uñas Acrílicas ($350)</option>
+                        <option value="Retoque Acrilicas" data-precio="200">Retoque Acrílicas ($200)</option>
+                        <option value="Diseño de Uñas" data-precio="80">Diseño de Uñas (desde $80)</option>
+                    </select>
+                </div>
+
+                <div class="price-display">
+                    <span>Total:</span>
+                    <span id="precioDisplay">$0</span>
+                </div>
+
+                <button type="submit" class="btn-glam">
+                    <i class="fas fa-gem"></i> Confirmar Reserva
+                </button>
+            </form>
+
+            <div id="message" class="message"></div>
+        </div>
+    </section>
+    
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-button active" id="loginTab">Iniciar Sesión</button>
+                <button class="tab-button" id="registerTab">Registrarse</button>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <h2>Iniciar Sesión</h2>
+                <div class="form-group">
+                    <label for="loginEmail"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
+                    <input type="email" id="loginEmail" placeholder="tu@ejemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword"><i class="fas fa-lock"></i> Contraseña:</label>
+                    <input type="password" id="loginPassword" placeholder="Tu contraseña" required>
+                </div>
+                <button type="submit" class="btn-glam">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+                <div id="loginMessage" class="message"></div>
+            </form>
+
+            <form id="registerForm" class="auth-form hidden">
+                <h2>Registrarse</h2>
+                <div class="form-group">
+                    <label for="registerName"><i class="fas fa-user"></i> Nombre Completo:</label>
+                    <input type="text" id="registerName" placeholder="Tu Nombre Completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
+                    <input type="email" id="registerEmail" placeholder="tu@ejemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword"><i class="fas fa-lock"></i> Contraseña:</label>
+                    <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required>
+                </div>
+                <button type="submit" class="btn-glam">
+                    <i class="fas fa-user-plus"></i> Crear Cuenta
+                </button>
+                <div id="registerMessage" class="message"></div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-spa"></i> Lili Nails Studio
+            </div>
+            <div class="footer-info">
+                <p><i class="fas fa-map-marker-alt"></i> Av. Belleza 123, Ciudad Glam</p>
+                <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> hola@lilinails.com</p>
+            </div>
+            <div class="footer-hours">
+                <h3>Horario:</h3>
+                <p>Lun-Vie: 9am - 7pm</p>
+                <p>Sáb: 10am - 5pm</p>
+                <p>Dom: Cerrado</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Lili Nails Studio. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+   
+    <script src="js/script.js"></script>
+</body>
+</html>
